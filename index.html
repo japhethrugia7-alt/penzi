@@ -3,107 +3,316 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Penzi Admin</title>
-<style>
-  :root {
-    --night:#14132B; --night-alt:#1E1D42; --night-soft:#29285A;
-    --gold:#E8A94C; --magenta:#E63975; --teal:#2A9D8F; --cream:#F7F3E8; --cream-dim:#C9C4D6;
-  }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family: 'Manrope', system-ui, sans-serif; background:var(--night); color:var(--cream); }
-  .wrap { max-width:760px; margin:0 auto; padding:32px 20px 80px; }
-  h1 { font-size:1.6rem; margin:0 0 4px; }
-  h2 { font-size:1.15rem; margin:32px 0 12px; color:var(--gold); }
-  .sub { color:var(--cream-dim); font-size:0.9rem; margin:0 0 24px; }
-  .card { background:var(--night-alt); border:1px solid rgba(247,243,232,0.08); border-radius:14px; padding:20px; margin-bottom:16px; }
-  label { display:block; font-size:0.78rem; font-weight:700; color:var(--gold); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.03em; }
-  input, select { width:100%; background:var(--night); border:1.5px solid rgba(247,243,232,0.15); border-radius:8px; padding:10px 12px; color:var(--cream); font-size:0.92rem; margin-bottom:14px; }
-  input:focus, select:focus { border-color:var(--gold); outline:none; }
-  button { border:none; border-radius:999px; padding:10px 20px; font-weight:700; font-size:0.88rem; cursor:pointer; }
-  .btn-primary { background:var(--magenta); color:var(--cream); }
-  .btn-gold { background:var(--gold); color:var(--night); }
-  .btn-ghost { background:transparent; border:1.5px solid rgba(247,243,232,0.3); color:var(--cream); }
-  .btn-sm { padding:6px 14px; font-size:0.8rem; }
-  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-  .stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:12px; }
-  .stat { background:var(--night); border-radius:10px; padding:14px; text-align:center; }
-  .stat .num { font-size:1.5rem; font-weight:800; color:var(--gold); }
-  .stat .label { font-size:0.72rem; color:var(--cream-dim); margin-top:4px; }
-  table { width:100%; border-collapse:collapse; font-size:0.85rem; }
-  th, td { text-align:left; padding:8px 6px; border-bottom:1px solid rgba(247,243,232,0.08); }
-  .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:0.72rem; font-weight:700; }
-  .badge.ok { background:rgba(42,157,143,0.2); color:var(--teal); }
-  .badge.banned { background:rgba(230,57,117,0.2); color:var(--magenta); }
-  .msg { font-size:0.85rem; margin-top:-8px; margin-bottom:12px; min-height:1em; }
-  .msg.ok { color:var(--teal); } .msg.err { color:var(--magenta); }
-  .hidden { display:none !important; }
-  #login-screen { max-width:360px; margin:80px auto; }
-  .help { font-size:0.78rem; color:var(--cream-dim); margin-top:-10px; margin-bottom:14px; }
-</style>
+<title>Penzi — Karibu kwa Penzi</title>
+<meta name="description" content="Penzi: find your penzi across Kenya and East Africa." />
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div id="login-screen" class="wrap">
-  <h1>Penzi Admin</h1>
-  <p class="sub">Enter your admin password to manage everything — no code required.</p>
-  <div class="card">
-    <label for="admin-password">Admin password</label>
-    <input type="password" id="admin-password" />
-    <p class="msg err" id="login-error"></p>
-    <button class="btn-primary" style="width:100%;" onclick="login()">Log in</button>
-    <p class="help" style="margin-top:12px;">Default password is <code>changeme-admin</code> unless you set the <code>ADMIN_PASSWORD</code> environment variable on your backend host.</p>
+<div class="kitenge-strip"></div>
+
+<!-- ================= LANDING ================= -->
+<div id="landing" class="landing-when-app">
+  <nav class="nav">
+    <div class="brand">Penzi<span class="dot">.</span></div>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" id="nav-login">Log in</button>
+      <button class="btn btn-primary" id="nav-signup">Join free</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <div class="hero-eyebrow">✦ Made for Kenya &amp; East Africa</div>
+      <h1>Karibu. Your <em>penzi</em> might be one swipe away.</h1>
+      <p class="lede">
+        Penzi connects singles across Nairobi, Mombasa, Kisumu and beyond —
+        real profiles, mutual matches only, and conversations that start
+        with something in common, not a stranger's DM.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" id="hero-signup">Create your profile</button>
+        <button class="btn btn-ghost" id="hero-login">I already have an account</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="num">47</span><span class="label">Counties reachable</span></div>
+        <div class="hero-stat"><span class="num">100%</span><span class="label">Mutual-match only</span></div>
+        <div class="hero-stat"><span class="num">0</span><span class="label">Spam DMs — ever</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="demo-card back-2"></div>
+      <div class="demo-card back-1"></div>
+      <div class="demo-card front">
+        <div class="photo">
+          <span class="badge">Nairobi · 3 km away</span>
+        </div>
+        <div class="info">
+          <div class="name">Amani, 27</div>
+          <div class="meta">Loves nyama choma &amp; Sunday hikes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>Penzi — Karibu kwa Penzi. 18+ only.</div>
+    <div>Built for genuine connections across East Africa.</div>
+  </footer>
+</div>
+
+<!-- ================= AUTH MODAL ================= -->
+<div id="auth-modal" class="modal-overlay hidden">
+  <div class="modal" style="position: relative;">
+    <button class="modal-close" id="auth-close" aria-label="Close">&times;</button>
+    <div class="modal-body">
+      <h2 id="auth-title">Karibu back</h2>
+      <p class="sub" id="auth-sub">Log in to continue to Penzi.</p>
+
+      <form id="auth-form">
+        <div class="field">
+          <label for="auth-email">Email</label>
+          <input type="email" id="auth-email" required autocomplete="email" />
+        </div>
+        <div class="field" id="phone-field" style="display:none;">
+          <label for="auth-phone">Phone (optional)</label>
+          <input type="tel" id="auth-phone" placeholder="07XX XXX XXX" />
+        </div>
+        <div class="field">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" required minlength="6" autocomplete="current-password" />
+        </div>
+        <div class="field" id="terms-field" style="display:none;">
+          <label style="display:flex; align-items:flex-start; gap:8px; text-transform:none; font-weight:500; color: var(--cream-dim); font-size:0.85rem;">
+            <input type="checkbox" id="auth-terms" style="width:auto; margin-top:3px;" />
+            <span>I confirm I'm 18 or older and agree to treat matches with respect — no harassment, no scams.</span>
+          </label>
+        </div>
+        <p class="form-error" id="auth-error"></p>
+        <button type="submit" class="btn btn-primary btn-block" id="auth-submit">Log in</button>
+      </form>
+
+      <div class="switch-mode">
+        <span id="switch-text">Don't have an account?</span>
+        <button id="switch-btn">Sign up</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<div id="dashboard" class="wrap hidden">
-  <div class="row" style="justify-content:space-between;">
-    <h1>Penzi Admin</h1>
-    <button class="btn-ghost btn-sm" onclick="logout()">Log out</button>
+<!-- ================= PROFILE SETUP MODAL ================= -->
+<div id="profile-setup-modal" class="modal-overlay hidden">
+  <div class="modal" style="max-width: 460px;">
+    <div class="modal-body">
+      <h2>Build your profile</h2>
+      <p class="sub">This is what other people will see. Be real — Penzi is for genuine connections.</p>
+      <form id="profile-setup-form" class="profile-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="ps-name">Name</label>
+            <input type="text" id="ps-name" required />
+          </div>
+          <div class="field">
+            <label for="ps-age">Age</label>
+            <input type="number" id="ps-age" min="18" max="100" required />
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="ps-gender">I am a</label>
+            <select id="ps-gender" required>
+              <option value="woman">Woman</option>
+              <option value="man">Man</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ps-interested">Show me</label>
+            <select id="ps-interested" required>
+              <option value="man">Men</option>
+              <option value="woman">Women</option>
+              <option value="everyone">Everyone</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ps-facebook">Facebook username (required)</label>
+          <input type="text" id="ps-facebook" placeholder="e.g. jane.wanjiru.94" required />
+        </div>
+        <div class="field">
+          <label for="ps-county">County / City</label>
+          <input type="text" id="ps-county" placeholder="e.g. Nairobi" />
+        </div>
+        <div class="field">
+          <label for="ps-bio">Bio</label>
+          <textarea id="ps-bio" placeholder="A little about you..." maxlength="300"></textarea>
+        </div>
+        <div class="field">
+          <label for="ps-interests">Interests (comma separated)</label>
+          <input type="text" id="ps-interests" placeholder="hiking, music, nyama choma" />
+        </div>
+        <p class="form-error" id="profile-setup-error"></p>
+        <button type="submit" class="btn btn-primary btn-block">Save &amp; start swiping</button>
+      </form>
+    </div>
   </div>
-  <p class="sub">Full control, no code editing needed.</p>
+</div>
 
-  <h2>Overview</h2>
-  <div class="card">
-    <div class="stat-grid" id="stats-grid"><p>Loading…</p></div>
+<!-- ================= MATCH MODAL (Moyo Meter) ================= -->
+<div id="match-modal" class="modal-overlay hidden">
+  <div class="modal match-modal">
+    <div class="modal-body">
+      <h2>It's a match! 🎉</h2>
+      <p class="sub" id="match-sub">You and <span id="match-name">someone</span> both said yes.</p>
+      <div class="moyo-meter">
+        <svg viewBox="0 0 120 120">
+          <path d="M60 105 C20 75 5 50 5 30 C5 12 20 2 35 2 C48 2 58 10 60 20 C62 10 72 2 85 2 C100 2 115 12 115 30 C115 50 100 75 60 105 Z"
+                fill="none" stroke="rgba(247,243,232,0.15)" stroke-width="6" />
+          <path id="moyo-fill-path" class="moyo-fill"
+                d="M60 105 C20 75 5 50 5 30 C5 12 20 2 35 2 C48 2 58 10 60 20 C62 10 72 2 85 2 C100 2 115 12 115 30 C115 50 100 75 60 105 Z"
+                fill="none" stroke="#E63975" stroke-width="6" stroke-linecap="round" />
+        </svg>
+        <div class="pct" id="moyo-pct">0%</div>
+      </div>
+      <p class="sub" style="margin-bottom:20px;">Moyo Meter compatibility score</p>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-ghost btn-block" id="match-keep-swiping">Keep swiping</button>
+        <button class="btn btn-primary btn-block" id="match-say-hi">Say hi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APP SHELL ================= -->
+<div id="app-shell" class="app-shell">
+  <div class="app-nav">
+    <div class="brand">Penzi<span class="dot">.</span></div>
+    <div class="app-tabs">
+      <button class="app-tab active" data-tab="discover">Discover</button>
+      <button class="app-tab" data-tab="matches">Matches</button>
+      <button class="app-tab" data-tab="profile">Profile</button>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="logout-btn">Log out</button>
   </div>
 
-  <h2>M-Pesa (Safaricom Daraja)</h2>
-  <div class="card">
-    <p class="help">Get these from your app at developer.safaricom.co.ke. Use "sandbox" while testing, switch to "production" once Safaricom approves your live app and gives you a real paybill/till shortcode.</p>
-    <label>Environment</label>
-    <select id="daraja_env"><option value="sandbox">Sandbox (testing)</option><option value="production">Production (live)</option></select>
-    <label>Consumer Key</label>
-    <input id="daraja_consumer_key" placeholder="from your Daraja app" />
-    <label>Consumer Secret</label>
-    <input id="daraja_consumer_secret" type="password" placeholder="from your Daraja app" />
-    <label>Business Shortcode (Paybill/Till)</label>
-    <input id="daraja_shortcode" placeholder="e.g. 174379" />
-    <label>Passkey</label>
-    <input id="daraja_passkey" type="password" placeholder="from your Daraja app" />
-    <label>Callback URL</label>
-    <input id="daraja_callback_url" placeholder="https://your-backend.onrender.com/mpesa/callback" />
-    <p class="help">This must be your live backend's public URL + <code>/mpesa/callback</code> — Safaricom needs to reach it directly, so it won't work with localhost.</p>
-    <p class="msg" id="daraja-msg"></p>
-    <button class="btn-gold" onclick="saveSettings()">Save M-Pesa settings</button>
-  </div>
+  <main class="app-main">
 
-  <h2>Pricing</h2>
-  <div class="card">
-    <label>Contact unlock price (KSH)</label>
-    <input id="unlock_price_ksh" placeholder="50" />
-    <p class="msg" id="price-msg"></p>
-    <button class="btn-gold" onclick="saveSettings()">Save price</button>
-  </div>
+    <!-- Discover tab -->
+    <section id="tab-discover" class="tab-panel">
+      <div class="deck-wrap">
+        <div class="deck" id="deck"></div>
+        <div class="deck-actions">
+          <button class="pass-btn" id="pass-btn" aria-label="Pass">✕</button>
+          <button class="like-btn" id="like-btn" aria-label="Like">♥</button>
+        </div>
+      </div>
+    </section>
 
-  <h2>Users</h2>
-  <div class="card">
-    <table id="users-table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th></th></tr></thead><tbody></tbody></table>
-  </div>
+    <!-- Matches tab -->
+    <section id="tab-matches" class="tab-panel hidden">
+      <h2 style="margin-top:0;">Your matches</h2>
+      <div class="matches-grid" id="matches-grid"></div>
+    </section>
 
-  <h2>Reports</h2>
-  <div class="card">
-    <table id="reports-table"><thead><tr><th>Reporter</th><th>Reported</th><th>Reason</th><th>When</th></tr></thead><tbody></tbody></table>
-  </div>
+    <!-- Chat tab (opened from a match) -->
+    <section id="tab-chat" class="tab-panel hidden">
+      <div class="chat-wrap">
+        <div class="chat-header">
+          <button class="btn btn-ghost btn-sm" id="chat-back">← Back</button>
+          <div class="avatar"></div>
+          <div style="flex:1;">
+            <div style="font-weight:700;" id="chat-name">Name</div>
+            <div style="font-size:0.8rem; color: var(--cream-dim);" id="chat-county">County</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="chat-report">Block / Report</button>
+        </div>
+
+        <div id="unlock-card" class="unlock-card">
+          <div id="unlock-locked">
+            <div style="font-weight:700;">🔒 Contact locked</div>
+            <div style="font-size:0.85rem; color:var(--cream-dim); margin:4px 0 10px;">
+              Pay <span id="unlock-price">KSH 50</span> via M-Pesa to unlock <span id="unlock-name-locked">their</span> phone number and Facebook.
+            </div>
+            <div class="row" style="display:flex; gap:8px;">
+              <input type="tel" id="unlock-phone" placeholder="Your M-Pesa number (07XX...)" style="flex:1;" />
+              <button class="btn btn-gold btn-sm" id="unlock-pay-btn">Pay &amp; unlock</button>
+            </div>
+            <p class="form-error" id="unlock-error"></p>
+            <p id="unlock-waiting" class="hidden" style="font-size:0.85rem; color:var(--gold); margin-top:8px;">
+              Check your phone and enter your M-Pesa PIN… waiting for confirmation.
+            </p>
+          </div>
+          <div id="unlock-unlocked" class="hidden">
+            <div style="font-weight:700; color: var(--teal);">✓ Contact unlocked</div>
+            <div style="font-size:0.9rem; margin-top:4px;">
+              📞 <span id="unlock-phone-value"></span> &nbsp;·&nbsp; 📘 <span id="unlock-fb-value"></span>
+            </div>
+          </div>
+        </div>
+        <div class="chat-log" id="chat-log"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Type a message..." maxlength="2000" />
+          <button class="btn btn-primary" id="chat-send">Send</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile tab -->
+    <section id="tab-profile" class="tab-panel hidden">
+      <h2 style="margin-top:0;">Edit your profile</h2>
+      <form id="profile-edit-form" class="profile-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="pe-name">Name</label>
+            <input type="text" id="pe-name" required />
+          </div>
+          <div class="field">
+            <label for="pe-age">Age</label>
+            <input type="number" id="pe-age" min="18" max="100" required />
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="pe-gender">I am a</label>
+            <select id="pe-gender">
+              <option value="woman">Woman</option>
+              <option value="man">Man</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pe-interested">Show me</label>
+            <select id="pe-interested">
+              <option value="man">Men</option>
+              <option value="woman">Women</option>
+              <option value="everyone">Everyone</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pe-facebook">Facebook username (required)</label>
+          <input type="text" id="pe-facebook" required />
+        </div>
+        <div class="field">
+          <label for="pe-county">County / City</label>
+          <input type="text" id="pe-county" />
+        </div>
+        <div class="field">
+          <label for="pe-bio">Bio</label>
+          <textarea id="pe-bio" maxlength="300"></textarea>
+        </div>
+        <div class="field">
+          <label for="pe-interests">Interests (comma separated)</label>
+          <input type="text" id="pe-interests" />
+        </div>
+        <p class="form-error" id="profile-edit-error"></p>
+        <p style="color: var(--teal); font-size: 0.85rem; min-height: 1em;" id="profile-edit-success"></p>
+        <button type="submit" class="btn btn-gold btn-block">Save changes</button>
+      </form>
+    </section>
+
+  </main>
 </div>
 
 <script>
@@ -111,124 +320,6 @@
   // window.PENZI_API_BASE = "https://penzi-api.onrender.com";
   window.PENZI_API_BASE = "https://penzi-api.onrender.com"; // <-- CHANGE THIS to your real Render URL
 </script>
-<script>
-const API_BASE = window.PENZI_API_BASE || "http://localhost:8000";
-let adminToken = sessionStorage.getItem("penzi_admin_token") || null;
-
-async function api(path, opts={}) {
-  const headers = { "Content-Type":"application/json" };
-  if (adminToken) headers["Authorization"] = "Bearer " + adminToken;
-  const res = await fetch(API_BASE + path, { method: opts.method||"GET", headers, body: opts.body ? JSON.stringify(opts.body) : undefined });
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.detail || "Request failed"); }
-  return res.json();
-}
-
-async function login() {
-  const password = document.getElementById("admin-password").value;
-  document.getElementById("login-error").textContent = "";
-  try {
-    const result = await api("/admin/login", { method:"POST", body:{ password } });
-    adminToken = result.access_token;
-    sessionStorage.setItem("penzi_admin_token", adminToken);
-    showDashboard();
-  } catch (err) {
-    document.getElementById("login-error").textContent = err.message;
-  }
-}
-function logout() {
-  adminToken = null;
-  sessionStorage.removeItem("penzi_admin_token");
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("login-screen").classList.remove("hidden");
-}
-
-async function showDashboard() {
-  document.getElementById("login-screen").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-  await Promise.all([loadStats(), loadSettings(), loadUsers(), loadReports()]);
-}
-
-async function loadStats() {
-  try {
-    const s = await api("/admin/stats");
-    document.getElementById("stats-grid").innerHTML = `
-      <div class="stat"><div class="num">${s.total_users}</div><div class="label">Users</div></div>
-      <div class="stat"><div class="num">${s.total_matches}</div><div class="label">Matches</div></div>
-      <div class="stat"><div class="num">${s.total_messages}</div><div class="label">Messages</div></div>
-      <div class="stat"><div class="num">${s.unlocks_completed}</div><div class="label">Unlocks paid</div></div>
-      <div class="stat"><div class="num">KSH ${s.revenue_ksh}</div><div class="label">Revenue</div></div>
-      <div class="stat"><div class="num">${s.total_reports}</div><div class="label">Reports</div></div>`;
-  } catch(err) { document.getElementById("stats-grid").innerHTML = `<p>${err.message}</p>`; }
-}
-
-async function loadSettings() {
-  try {
-    const s = await api("/admin/settings");
-    document.getElementById("daraja_env").value = s.daraja_env || "sandbox";
-    document.getElementById("daraja_shortcode").value = s.daraja_shortcode || "";
-    document.getElementById("daraja_callback_url").value = s.daraja_callback_url || "";
-    document.getElementById("unlock_price_ksh").value = s.unlock_price_ksh || "50";
-    // consumer_key/secret/passkey are masked by the API — leave blank, only overwritten if re-entered
-    document.getElementById("daraja_consumer_key").placeholder = s.daraja_consumer_key || "from your Daraja app";
-  } catch(err) { /* ignore on first load */ }
-}
-
-async function saveSettings() {
-  const body = {
-    daraja_env: document.getElementById("daraja_env").value,
-    daraja_consumer_key: document.getElementById("daraja_consumer_key").value || undefined,
-    daraja_consumer_secret: document.getElementById("daraja_consumer_secret").value || undefined,
-    daraja_shortcode: document.getElementById("daraja_shortcode").value || undefined,
-    daraja_passkey: document.getElementById("daraja_passkey").value || undefined,
-    daraja_callback_url: document.getElementById("daraja_callback_url").value || undefined,
-    unlock_price_ksh: document.getElementById("unlock_price_ksh").value || undefined,
-  };
-  try {
-    await api("/admin/settings", { method:"PUT", body });
-    document.getElementById("daraja-msg").textContent = "Saved ✓";
-    document.getElementById("daraja-msg").className = "msg ok";
-    document.getElementById("price-msg").textContent = "Saved ✓";
-    document.getElementById("price-msg").className = "msg ok";
-    loadSettings();
-  } catch(err) {
-    document.getElementById("daraja-msg").textContent = err.message;
-    document.getElementById("daraja-msg").className = "msg err";
-  }
-}
-
-async function loadUsers() {
-  try {
-    const users = await api("/admin/users");
-    const tbody = document.querySelector("#users-table tbody");
-    tbody.innerHTML = users.map(u => `
-      <tr>
-        <td>${u.name || "—"}</td>
-        <td>${u.email}</td>
-        <td>${u.phone || "—"}</td>
-        <td><span class="badge ${u.is_banned?'banned':'ok'}">${u.is_banned?'Banned':'Active'}</span></td>
-        <td><button class="btn-ghost btn-sm" onclick="toggleBan(${u.id}, ${u.is_banned})">${u.is_banned?'Unban':'Ban'}</button></td>
-      </tr>`).join("");
-  } catch(err) { document.querySelector("#users-table tbody").innerHTML = `<tr><td colspan="5">${err.message}</td></tr>`; }
-}
-
-async function toggleBan(userId, isBanned) {
-  try {
-    await api(`/admin/users/${userId}/${isBanned ? 'unban' : 'ban'}`, { method:"POST" });
-    loadUsers();
-  } catch(err) { alert(err.message); }
-}
-
-async function loadReports() {
-  try {
-    const reports = await api("/admin/reports");
-    const tbody = document.querySelector("#reports-table tbody");
-    if (reports.length === 0) { tbody.innerHTML = `<tr><td colspan="4">No reports yet.</td></tr>`; return; }
-    tbody.innerHTML = reports.map(r => `
-      <tr><td>#${r.reporter_id}</td><td>#${r.reported_id}</td><td>${r.reason}</td><td>${new Date(r.created_at).toLocaleDateString()}</td></tr>`).join("");
-  } catch(err) { document.querySelector("#reports-table tbody").innerHTML = `<tr><td colspan="4">${err.message}</td></tr>`; }
-}
-
-if (adminToken) { showDashboard().catch(logout); }
-</script>
+<script src="js/app.js"></script>
 </body>
 </html>
